@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Radio Kalmykia</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="logo">Logo</string>
+    <string name="contact_text">Контакты</string>
+    <string name="about_text">О нас</string>
+    <string name="main_text">Главная</string>
+    <string name="logo_app_1">Радио</string>
+    <string name="logo_app_2">России</string>
+</resources>
