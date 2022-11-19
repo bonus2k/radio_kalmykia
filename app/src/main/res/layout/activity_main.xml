@@ -7,7 +7,6 @@
     android:background="@color/mainBgColor"
     tools:context=".MainActivity">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="65dp"
@@ -16,6 +15,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
 
         <TextView
             android:id="@+id/contacts"
@@ -37,6 +37,7 @@
             android:layout_height="100dp"
             android:fontFamily="@font/montserrat_subrayada"
             android:gravity="center"
+            android:onClick="startAboutActivity"
             android:rotation="-90"
             android:text="@string/about_text"
             android:textColor="@color/black"
@@ -87,16 +88,25 @@
         app:layout_constraintStart_toEndOf="@+id/textViewLogo_1"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="49dp"
-        android:layout_height="71dp"
-        android:layout_marginTop="32dp"
+    <LinearLayout
+        android:id="@+id/playbtnLayout"
+        android:layout_width="299dp"
+        android:layout_height="77dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toEndOf="@+id/constraintLayout"
-        app:layout_constraintTop_toBottomOf="@+id/imageView5"
-        app:srcCompat="@drawable/play_pause_svgrepo_com" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.739">
+
+        <ImageView
+            android:id="@+id/play"
+            android:layout_width="match_parent"
+            android:layout_height="109dp"
+            app:srcCompat="@drawable/play" />
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/imageView5"
