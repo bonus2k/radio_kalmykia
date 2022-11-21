@@ -1,104 +1,103 @@
 package com.example.radiokalmykia;
 
+import android.Manifest;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
-import com.example.radiokalmykia.databinding.ActivityMainBinding;
+import com.chibde.visualizer.LineVisualizer;
+import com.example.radiokalmykia.databinding.PlayerMainBinding;
 
 import java.io.IOException;
 
-public class PlayerActivity extends AppCompatActivity{
-
-    ActivityMainBinding activityRadioBinding;
-
-    MediaPlayer mediaPlayer;
-    ImageView playbtn;
-//    SeekBar seekprog;
-    //    ImageSlider mainslide;
-    Handler handler = new Handler();
-//    LottieAnimationView animation1, animation2;
-
-//    DrawerLayout drawerLayout;
-//    NavigationView navigationView;
-//    MaterialToolbar toolbar;
+public class PlayerActivity extends AppCompatActivity implements View.OnClickListener, Constants {
 
 
-//    private boolean isbackPressed = false;
+    private PlayerMainBinding binding;
+    private ImageView playbtn;
+    private static MediaPlayer mediaPlayer;
+    private static boolean prepared = false;
 
-    boolean prepared = false;
-
-    String stream = "https://hls-01-vgtrk.hostingradio.ru/vgtrk-rr-klm/playlist.m3u8";
-
-
-
+    private static final String STREAM = "https://hls-01-vgtrk.hostingradio.ru/vgtrk-rr-klm/playlist.m3u8";
+    private static int PERMISSION_MIC;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-//        activityRadioBinding = ActivityPlayerBinding.inflate(getLayoutInflater());
-//        setContentView(activityRadioBinding.getRoot());
-        activityRadioBinding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(activityRadioBinding.getRoot());
-        allocateActivityTitle("Radio");
-
-        playbtn = findViewById(R.id.play);
-//        seekprog = findViewById(R.id.seekbar);
-//        animation1 = findViewById(R.id.animation1_view);
-//        animation2 = findViewById(R.id.animation2_view);
-//
-//
-//
-//
-//        mainslide = findViewById(R.id.image_slider);
-//
-//        final List<SlideModel> images = new ArrayList<>();
-//
-//        FirebaseDatabase.getInstance().getReference().child("Slider")
-//                .addListenerForSingleValueEvent(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                        for(DataSnapshot data:dataSnapshot.getChildren())
-//                            images.add(new SlideModel(data.child("url").getValue().toString(), ScaleTypes.FIT));
-//
-//                        mainslide.setImageList(images,ScaleTypes.FIT);
-//
-//                    }
-//
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) {
-//
-//                    }
-//                });
-
-
-
-        mediaPlayer = new MediaPlayer();
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-
-        new PlayerTask().execute(stream);
-
-        mediaPlayer.setOnPreparedListener(mediaPlayer -> playbtn.setEnabled(true));
-
-
+        binding = PlayerMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        setupPlayButton();
+        playbtn.setOnClickListener(this);
+        checkMediaPlayer();
+        soundVisualization(this.getCurrentFocus());
+        View about = findViewById(R.id.about);
+        View contacts = findViewById(R.id.contacts);
+        about.setOnClickListener(this::startAboutActivity);
+        contacts.setOnClickListener(this::startContactsActivity);
 
     }
 
+    private void checkMediaPlayer() {
+        if (mediaPlayer == null) {
+            mediaPlayer = new MediaPlayer();
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            new PlayerTask().execute(STREAM);
+        }
+    }
 
+    private void setupPlayButton() {
+        playbtn = findViewById(R.id.play);
+        if (mainBundle.getInt("playbtn") == 1) {
+            playbtn.setImageResource(R.drawable.pause);
+        }
+    }
+
+    @Override
+    public void startPlayerActivity(View v) {
+
+    }
+
+    @Override
+    public void startAboutActivity(View v) {
+        Intent intent = new Intent(this, AboutActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void startContactsActivity(View v) {
+        Intent intent = new Intent(this, ContactsActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (mediaPlayer.isPlaying()) {
+            mediaPlayer.pause();
+            mainBundle.putInt("playbtn", 0);
+            playbtn.setImageResource(R.drawable.play);
+        } else {
+            mediaPlayer.start();
+            mainBundle.putInt("playbtn", 1);
+            playbtn.setImageResource(R.drawable.pause);
+        }
+    }
 
 
     class PlayerTask extends AsyncTask<String, Void, Boolean> implements MediaPlayer.OnErrorListener, MediaPlayer.OnPreparedListener {
-
         @Override
         protected Boolean doInBackground(String... strings) {
-            System.out.println(strings);
             try {
                 mediaPlayer.setDataSource(strings[0]);
                 mediaPlayer.setOnErrorListener(this);
@@ -108,7 +107,6 @@ public class PlayerActivity extends AppCompatActivity{
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             return prepared;
         }
 
@@ -120,34 +118,26 @@ public class PlayerActivity extends AppCompatActivity{
         @Override
         public void onPrepared(MediaPlayer mediaPlayer) {
 
-            playbtn.setOnClickListener(view -> {
-                if(mediaPlayer.isPlaying()){
-                    mediaPlayer.pause();
-//                    seekprog.setProgress(0);
-                    playbtn.setImageResource(R.drawable.play);
-//                        animation1.pauseAnimation();
-//                        animation2.pauseAnimation();
-
-                }
-                else{
-                    mediaPlayer.start();
-//                    seekprog.setProgress(100);
-                    playbtn.setImageResource(R.drawable.pause);
-//                        animation1.playAnimation();
-//                        animation2.playAnimation();
-                }
-            });
-
-
         }
 
-
-
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+        }
     }
 
-    protected void allocateActivityTitle(String titleString){
-        if(getSupportActionBar() != null){
-            getSupportActionBar().setTitle(titleString);
+    public void soundVisualization(View view) {
+        int RECORD_AUDIO = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
+        int MODIFY_AUDIO_SETTINGS = ContextCompat.checkSelfPermission(this, Manifest.permission.MODIFY_AUDIO_SETTINGS);
+        if (RECORD_AUDIO == PackageManager.PERMISSION_GRANTED && MODIFY_AUDIO_SETTINGS == PackageManager.PERMISSION_GRANTED) {
+            LineVisualizer visualizer = findViewById(R.id.visualizerLineBar);
+            visualizer.setVisibility(View.VISIBLE);
+            visualizer.setColor(ContextCompat.getColor(this, R.color.blue_for_text));
+            visualizer.setStrokeWidth(1);
+            visualizer.setPlayer(mediaPlayer.getAudioSessionId());
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO, Manifest.permission.MODIFY_AUDIO_SETTINGS},
+                    PERMISSION_MIC);
         }
     }
 }

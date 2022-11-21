@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/mainBgColor"
-    tools:context=".MainActivity">
+    tools:context=".ContactsActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -16,12 +15,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
         <TextView
             android:id="@+id/contacts"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:fontFamily="@font/montserrat_subrayada"
+            android:fontFamily="sans-serif-black"
             android:gravity="center"
             android:rotation="-90"
             android:text="@string/contact_text"
@@ -35,7 +33,7 @@
             android:id="@+id/about"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:fontFamily="@font/montserrat_subrayada"
+            android:fontFamily="sans-serif"
             android:gravity="center"
             android:onClick="startAboutActivity"
             android:rotation="-90"
@@ -51,8 +49,9 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginTop="20dp"
-            android:fontFamily="@font/montserrat_subrayada_bold"
+            android:fontFamily="sans-serif"
             android:gravity="center"
+            android:onClick="startPlayerActivity"
             android:rotation="-90"
             android:text="@string/main_text"
             android:textColor="@color/black"
@@ -69,7 +68,7 @@
         android:layout_marginStart="100dp"
         android:layout_marginTop="64dp"
         android:fontFamily="@font/montserrat_subrayada"
-        android:text="@string/logo_app_1"
+        android:text="@string/contacts_app_1"
         android:textColor="@color/black"
         android:textSize="40sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -79,68 +78,31 @@
         android:id="@+id/textLogo2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="64dp"
         android:fontFamily="@font/montserrat_subrayada_bold"
-        android:text="@string/logo_app_2"
+        android:text="@string/contacts_app_2"
         android:textColor="#011B9E"
         android:textSize="40sp"
         app:layout_constraintStart_toEndOf="@+id/textViewLogo_1"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/playbtnLayout"
-        android:layout_width="299dp"
-        android:layout_height="77dp"
-        android:layout_gravity="center"
-        android:gravity="center"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/constraintLayout"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.739">
+        app:layout_constraintGuide_begin="20dp" />
 
-        <ImageView
-            android:id="@+id/play"
-            android:layout_width="match_parent"
-            android:layout_height="109dp"
-            app:srcCompat="@drawable/play" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="274dp"
+        android:layout_height="202dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="150dp"
+        android:text="Государственная телерадиокомпания «Калмыкия» 358000, Республика Калмыкия, г. Элиста, ул. Максима Горького, 34  Телефон: +7 (84722) 4-06-10 kalmykiya-priemnaya@vgtrk.ru  По вопросам рекламы обращаться по телефону: 89275903000. 8 84722 33155."
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="217dp"
-        android:layout_height="216dp"
-        android:layout_marginTop="128dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/constraintLayout"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_launcher_foreground" />
-
-    <!--    <com.google.android.material.appbar.AppBarLayout-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:theme="@style/Theme.RadioKalmykia.AppBarOverlay">-->
-
-    <!--&lt;!&ndash;        <androidx.appcompat.widget.Toolbar&ndash;&gt;-->
-    <!--&lt;!&ndash;            android:id="@+id/toolbar"&ndash;&gt;-->
-    <!--&lt;!&ndash;            android:layout_width="match_parent"&ndash;&gt;-->
-    <!--&lt;!&ndash;            android:layout_height="?attr/actionBarSize"&ndash;&gt;-->
-    <!--&lt;!&ndash;            android:background="?attr/colorPrimary"&ndash;&gt;-->
-    <!--&lt;!&ndash;            app:popupTheme="@style/Theme.RadioKalmykia.PopupOverlay" />&ndash;&gt;-->
-
-    <!--    </com.google.android.material.appbar.AppBarLayout>-->
-
-    <!--    <include layout="@layout/content_main" />-->
-
-    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-    <!--        android:id="@+id/fab"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_gravity="bottom|end"-->
-    <!--        android:layout_marginEnd="@dimen/fab_margin"-->
-    <!--        android:layout_marginBottom="16dp"-->
-    <!--        app:srcCompat="@android:drawable/ic_dialog_email" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
